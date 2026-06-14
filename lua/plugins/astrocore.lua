@@ -1,5 +1,3 @@
-if true then return {} end -- WARN: REMOVE THIS LINE TO ACTIVATE THIS FILE
-
 -- AstroCore provides a central place to modify mappings, vim options, autocommands, and more!
 -- Configuration documentation can be found with `:h astrocore`
 -- NOTE: We highly recommend setting up the Lua Language Server (`:LspInstall lua_ls`)
@@ -24,30 +22,20 @@ return {
       virtual_text = true,
       underline = true,
     },
-    -- passed to `vim.filetype.add`
-    filetypes = {
-      -- see `:h vim.filetype.add` for usage
-      extension = {
-        foo = "fooscript",
-      },
-      filename = {
-        [".foorc"] = "fooscript",
-      },
-      pattern = {
-        [".*/etc/foo/.*"] = "fooscript",
-      },
-    },
     -- vim options can be configured here
     options = {
       opt = { -- vim.opt.<key>
+        cmdheight = 1, -- enable command line height of 1 row to see match counts
         relativenumber = true, -- sets vim.opt.relativenumber
         number = true, -- sets vim.opt.number
         spell = false, -- sets vim.opt.spell
         signcolumn = "yes", -- sets vim.opt.signcolumn to yes
         wrap = false, -- sets vim.opt.wrap
+        colorcolumn = { 88, 120 }, -- set colorcolumn to psf/black's line width setting
       },
       g = { -- vim.g.<key>
         -- configure global vim variables (vim.g)
+        python3_host_prog = "~/.pyenv/versions/neovim/bin/python",
         -- NOTE: `mapleader` and `maplocalleader` must be set in the AstroNvim opts or before `lazy.setup`
         -- This can be found in the `lua/lazy_setup.lua` file
       },
@@ -73,12 +61,38 @@ return {
           desc = "Close buffer from tabline",
         },
 
+        -- add mapping for GitHub Copilot commands
+        ["<Leader>GG"] = {
+          "<cmd>lua require('copilot.panel').open({ position='right', ratio=0.4 })<CR>",
+          desc = "Open Copilot Panel in split right",
+        },
+        ["<Leader>Gr"] = { "<cmd>lua require('copilot.panel').refresh()<CR>", desc = "Refresh suggestions" },
+
+        -- vim-easy-align mappings
+        ["ga"] = { ":EasyAlign ", desc = "EasyAlign" },
+
         -- tables with just a `desc` key will be registered with which-key if it's installed
         -- this is useful for naming menus
         -- ["<Leader>b"] = { desc = "Buffers" },
 
         -- setting a mapping to false will disable it
         -- ["<C-S>"] = false,
+
+        -- Unset default AstroNvim mappings
+        ["<C-s>"] = false, -- disable force write
+        ["<C-q>"] = false, -- disable force quit
+
+        -- Unset default AstroNvim leader mappings that will close or write buffers
+        ["<Leader>c"] = false,
+        ["<Leader>C"] = false,
+        ["<Leader>q"] = false,
+        ["<Leader>w"] = false,
+        ["<Leader>Q"] = false,
+        ["<Leader>W"] = false,
+      },
+      v = {
+        -- vim-easy-align mappings
+        ["ga"] = { ":EasyAlign ", desc = "EasyAlign" },
       },
     },
   },

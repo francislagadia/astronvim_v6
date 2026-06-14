@@ -17,6 +17,7 @@ require("lazy").setup({
   -- Configure any other `lazy.nvim` configuration options here
   install = { colorscheme = { "astrotheme", "habamax" } },
   ui = { backdrop = 100 },
+  rocks = { hererocks = false },
   performance = {
     rtp = {
       -- disable some rtp plugins, add more to your liking

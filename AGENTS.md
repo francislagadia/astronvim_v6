@@ -33,6 +33,19 @@ Do not modify the v5 config at `~/.config/nvim` from work in this repo.
   - Do not add explicit `{ enabled = false }` specs unless requested.
 - Only commit `lazy-lock.json` when plugin pins changed intentionally.
 
+## Pins
+
+- `opencode.nvim` is pinned to `v0.10.2` in `lazy-lock.json`.
+  - Reason: AstroCommunity's `opencode-nvim` module maps `<Leader>Ot` to `require("opencode").toggle()`, but `toggle()` was removed in `opencode.nvim` `v0.11.0+`.
+  - If you update plugins and OpenCode breaks again, either keep this pin or update keymaps to use a user-land terminal toggle (see `opencode.nvim` changelog).
+
+## After Updating (Lazy/Mason)
+
+- If you run `<Leader>pa` / update plugins:
+  - Verify OpenCode still works: try `<Leader>Ot`.
+  - Or check API in headless mode:
+    - `NVIM_APPNAME=astronvim_v6 nvim --headless "+lua assert(type(require('opencode').toggle)=='function')" "+qa"`
+
 ## Testing
 
 - Fast config load check:

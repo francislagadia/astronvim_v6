@@ -27,35 +27,37 @@ return {
           "thumbs.db",
         },
         hide_by_pattern = {
-          "**/.git/**",
-          "**/.venv/**",
-          "**/__pycache__/**",
-          "**/build/**",
-          "**/dist/**",
-          "**/node_modules/**",
+          -- NOTE: neo-tree matches these with Lua patterns (string.find), not glob.
+          -- Put path patterns (contain "/") here, filename-only patterns elsewhere.
+          "/%.git/",
+          "/%.venv/",
+          "/__pycache__/",
+          "/node_modules/",
+          "/build/",
+          "/dist/",
           -- macOS user-level system dirs
-          "**/Applications/**",
-          "**/Library/**",
-          "**/System/**",
-          "**/Volumes/**",
-          "**/private/**",
+          "/Applications/",
+          "/Library/",
+          "/System/",
+          "/Volumes/",
+          "/private/",
           -- Optional: other noisy home dirs
-          "**/Movies/**",
-          "**/Music/**",
-          "**/Pictures/**",
-          "**/Public/**",
+          "/Movies/",
+          "/Music/",
+          "/Pictures/",
+          "/Public/",
           -- Finder junk
-          "**/.DS_Store",
-          "**/._*",
+          "%._.*",
         },
         hide_dotfiles = false,
         hide_gitignored = true,
         never_show_by_pattern = {
-          "**/*.py[a-zA-Z]",
+          "%.pyc$",
+          "%.pyo$",
         },
       },
-      follow_current_file = true, -- Automatically focus the NeoTree window on the current file
-      scan_depth = 3, -- Limit the depth of directory scanning to 3 levels
+      follow_current_file = { enabled = true }, -- Focus tree on the current file
+      scan_mode = "shallow", -- neo-tree has shallow/deep, no scan_depth option
     },
   },
 }

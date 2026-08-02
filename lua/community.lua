@@ -15,8 +15,14 @@ return {
   -- Codex.nvim: lightweight AI popup; community spec maps <Leader>Oc by default
   { import = "astrocommunity.ai.codex-nvim" },
 
-  -- Catppuccin: active theme, using the Mocha flavour locally
+  -- Catppuccin: keep available as an optional theme
   { import = "astrocommunity.colorscheme.catppuccin" },
+
+  -- Gruvbox Baby: active theme, imported from AstroCommunity
+  { import = "astrocommunity.colorscheme.gruvbox-baby" },
+
+  -- Gruvbox: keep available as an optional theme
+  { import = "astrocommunity.colorscheme.gruvbox-nvim" },
 
   -- TokyoNight: keep available as an optional theme, but do not switch to it by default
   { import = "astrocommunity.colorscheme.tokyonight-nvim" },

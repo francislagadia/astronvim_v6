@@ -1,13 +1,6 @@
 -- if true then return {} end -- WARN: REMOVE THIS LINE TO ACTIVATE THIS FILE
 return {
   {
-    "AstroNvim/astroui",
-    ---@type AstroUIOpts
-    opts = {
-      colorscheme = "catppuccin-mocha",
-    },
-  },
-  {
     "catppuccin/nvim",
     name = "catppuccin",
     opts = function(_, opts)

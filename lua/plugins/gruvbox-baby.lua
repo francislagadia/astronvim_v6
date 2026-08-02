@@ -1,4 +1,3 @@
-if true then return {} end -- WARN: REMOVE THIS LINE TO ACTIVATE THIS FILE
 return {
   {
     "AstroNvim/astroui",
@@ -9,9 +8,14 @@ return {
   },
   {
     "luisiacc/gruvbox-baby",
-    init = function() -- init function runs before the plugin is loaded
-      vim.g.gruvbox_baby_transparent_mode = 1
-      vim.g.background_color = "dark"
+    lazy = false,
+    priority = 1000,
+    init = function()
+      -- gruvbox-baby only exposes medium/dark intensity; dark is the closest match
+      -- to the harder gruvbox background variant.
+      vim.o.background = "dark"
+      vim.g.gruvbox_baby_background_color = "dark"
+      vim.g.gruvbox_baby_transparent_mode = 0
     end,
   },
 }

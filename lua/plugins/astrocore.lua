@@ -1,9 +1,36 @@
--- if true then return {} end -- WARN: REMOVE THIS LINE TO ACTIVATE THIS FILE
-
 -- AstroCore provides a central place to modify mappings, vim options, autocommands, and more!
 -- Configuration documentation can be found with `:h astrocore`
 -- NOTE: We highly recommend setting up the Lua Language Server (`:LspInstall lua_ls`)
 --       as this provides autocomplete and documentation while editing
+
+local repo_rules = {
+  {
+    prefix = "/Users/flagadia/github/projects/tiger/integrations/qa-automation/",
+    root = "/Users/flagadia/github/projects/tiger/integrations/qa-automation",
+  },
+  {
+    prefix = "/Users/flagadia/github/projects/tiger/integrations/qa-shared-services/",
+    root = "/Users/flagadia/github/projects/tiger/integrations/qa-shared-services",
+  },
+}
+
+local function lazygit_root_for_current_buffer()
+  local path = vim.fs.normalize(vim.api.nvim_buf_get_name(0))
+
+  for _, rule in ipairs(repo_rules) do
+    if path ~= "" and path:find(rule.prefix, 1, true) == 1 then return rule.root end
+  end
+end
+
+local function toggle_lazygit()
+  local astro = require "astrocore"
+  local root = lazygit_root_for_current_buffer()
+
+  if not root then vim.notify("No lazygit repo rule matched; using current cwd", vim.log.levels.INFO) end
+
+  local cmd = root and ("lazygit -p " .. vim.fn.shellescape(root)) or "lazygit"
+  astro.toggle_term_cmd { cmd = cmd, direction = "float" }
+end
 
 ---@type LazySpec
 return {
@@ -23,19 +50,6 @@ return {
     diagnostics = {
       virtual_text = true,
       underline = true,
-    },
-    -- passed to `vim.filetype.add`
-    filetypes = {
-      -- see `:h vim.filetype.add` for usage
-      extension = {
-        foo = "fooscript",
-      },
-      filename = {
-        [".foorc"] = "fooscript",
-      },
-      pattern = {
-        [".*/etc/foo/.*"] = "fooscript",
-      },
     },
     -- vim options can be configured here
     options = {
@@ -76,6 +90,12 @@ return {
           desc = "Close buffer from tabline",
         },
 
+        ["<Leader>gg"] = { toggle_lazygit, desc = "ToggleTerm lazygit" },
+        ["<Leader>tl"] = { toggle_lazygit, desc = "ToggleTerm lazygit" },
+
+        -- vim-easy-align mappings
+        ["ga"] = { ":EasyAlign ", desc = "EasyAlign" },
+
         -- tables with just a `desc` key will be registered with which-key if it's installed
         -- this is useful for naming menus
         -- ["<Leader>b"] = { desc = "Buffers" },
@@ -83,23 +103,12 @@ return {
         -- setting a mapping to false will disable it
         -- ["<C-S>"] = false,
 
-        -- add mapping for GitHub Copilot commands
-        ["<Leader>G"] = { desc = "GitHub Copilot" },
-        ["<Leader>GG"] = {
-          "<cmd>lua require('copilot.panel').open({ position='right', ratio=0.4 })<CR>",
-          desc = "Open Copilot Panel in split right",
-        },
-        ["<Leader>Gr"] = { "<cmd>lua require('copilot.panel').refresh()<CR>", desc = "Refresh suggestions" },
-
-        -- vim-easy-align mappings
-        ["ga"] = { ":EasyAlign ", desc = "EasyAlign" },
-
         -- Unset default AstroNvim mappings
         ["<C-s>"] = false, -- disable force write
         ["<C-q>"] = false, -- disable force quit
 
         -- Unset default AstroNvim leader mappings that will close or write buffers
-        ["<Leader>c"] = { desc = "CopilotChat attached" },
+        ["<Leader>c"] = false,
         ["<Leader>C"] = false,
         ["<Leader>q"] = false,
         ["<Leader>w"] = false,

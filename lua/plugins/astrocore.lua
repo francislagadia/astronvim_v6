@@ -3,6 +3,35 @@
 -- NOTE: We highly recommend setting up the Lua Language Server (`:LspInstall lua_ls`)
 --       as this provides autocomplete and documentation while editing
 
+local repo_rules = {
+  {
+    prefix = "/Users/flagadia/github/projects/tiger/integrations/qa-automation/",
+    root = "/Users/flagadia/github/projects/tiger/integrations/qa-automation",
+  },
+  {
+    prefix = "/Users/flagadia/github/projects/tiger/integrations/qa-shared-services/",
+    root = "/Users/flagadia/github/projects/tiger/integrations/qa-shared-services",
+  },
+}
+
+local function lazygit_root_for_current_buffer()
+  local path = vim.fs.normalize(vim.api.nvim_buf_get_name(0))
+
+  for _, rule in ipairs(repo_rules) do
+    if path ~= "" and path:find(rule.prefix, 1, true) == 1 then return rule.root end
+  end
+end
+
+local function toggle_lazygit()
+  local astro = require "astrocore"
+  local root = lazygit_root_for_current_buffer()
+
+  if not root then vim.notify("No lazygit repo rule matched; using current cwd", vim.log.levels.INFO) end
+
+  local cmd = root and ("lazygit -p " .. vim.fn.shellescape(root)) or "lazygit"
+  astro.toggle_term_cmd { cmd = cmd, direction = "float" }
+end
+
 ---@type LazySpec
 return {
   "AstroNvim/astrocore",
@@ -61,12 +90,8 @@ return {
           desc = "Close buffer from tabline",
         },
 
-        -- add mapping for GitHub Copilot commands
-        ["<Leader>GG"] = {
-          "<cmd>lua require('copilot.panel').open({ position='right', ratio=0.4 })<CR>",
-          desc = "Open Copilot Panel in split right",
-        },
-        ["<Leader>Gr"] = { "<cmd>lua require('copilot.panel').refresh()<CR>", desc = "Refresh suggestions" },
+        ["<Leader>gg"] = { toggle_lazygit, desc = "ToggleTerm lazygit" },
+        ["<Leader>tl"] = { toggle_lazygit, desc = "ToggleTerm lazygit" },
 
         -- vim-easy-align mappings
         ["ga"] = { ":EasyAlign ", desc = "EasyAlign" },

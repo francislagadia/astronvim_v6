@@ -15,6 +15,9 @@ return {
   -- Codex.nvim: lightweight AI popup; community spec maps <Leader>Oc by default
   { import = "astrocommunity.ai.codex-nvim" },
 
+  -- Catppuccin: keep the v5 theme installed, but not active yet
+  { import = "astrocommunity.colorscheme.catppuccin" },
+
   -- Copilot + cmp/blink integration
   { import = "astrocommunity.completion.copilot-lua-cmp" },
 

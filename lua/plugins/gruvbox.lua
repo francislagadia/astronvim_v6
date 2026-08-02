@@ -4,24 +4,26 @@ return {
     "AstroNvim/astroui",
     ---@type AstroUIOpts
     opts = {
-      colorscheme = "tokyonight",
+      colorscheme = "gruvbox",
     },
   },
   {
-    "folke/tokyonight.nvim",
+    "ellisonleao/gruvbox.nvim",
     init = function() -- init function runs before the plugin is loaded
       vim.o.background = "dark" -- dark or light
     end,
     opts = function(_, opts)
-      opts = opts or {}
-      opts.style = "night"
-      opts.transparent = true
+      -- override default options thru the opts table
       opts.terminal_colors = true
-      opts.styles = vim.tbl_deep_extend("force", opts.styles or {}, {
-        comments = { italic = true },
-        keywords = { italic = false },
-      })
-      return opts
+      opts.contrast = "hard"
+      opts.transparent_mode = true
+      opts.italic = {
+        strings = false,
+        emphasis = false,
+        comments = true,
+        operators = false,
+        folds = true,
+      }
     end,
   },
 }

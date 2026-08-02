@@ -21,6 +21,9 @@ return {
   -- Trouble.nvim: diagnostics/location list UI
   { import = "astrocommunity.diagnostics.trouble-nvim" },
 
+  -- Conform.nvim: formatter runner + :Format command
+  { import = "astrocommunity.editing-support.conform-nvim" },
+
   -- Undotree: visual undo history
   { import = "astrocommunity.editing-support.undotree" },
 
@@ -36,6 +39,7 @@ return {
   -- Python tooling
   { import = "astrocommunity.pack.python.base" },
   { import = "astrocommunity.pack.python.ruff" },
+  { import = "astrocommunity.pack.python.basedpyright" },
 
   -- TOML tooling
   { import = "astrocommunity.pack.toml" },

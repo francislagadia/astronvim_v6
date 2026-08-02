@@ -15,7 +15,7 @@ return {
   -- Codex.nvim: lightweight AI popup; community spec maps <Leader>Oc by default
   { import = "astrocommunity.ai.codex-nvim" },
 
-  -- Catppuccin: keep the v5 theme installed, but not active yet
+  -- Catppuccin: active theme, using the Mocha flavour locally
   { import = "astrocommunity.colorscheme.catppuccin" },
 
   -- TokyoNight: keep available as an optional theme, but do not switch to it by default

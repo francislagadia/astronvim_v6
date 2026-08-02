@@ -18,6 +18,9 @@ return {
   -- Catppuccin: keep the v5 theme installed, but not active yet
   { import = "astrocommunity.colorscheme.catppuccin" },
 
+  -- TokyoNight: keep available as an optional theme, but do not switch to it by default
+  { import = "astrocommunity.colorscheme.tokyonight-nvim" },
+
   -- Copilot + cmp/blink integration
   { import = "astrocommunity.completion.copilot-lua-cmp" },
 

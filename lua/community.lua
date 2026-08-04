@@ -42,6 +42,9 @@ return {
   -- Markdown Preview
   { import = "astrocommunity.markdown-and-latex.markdown-preview-nvim" },
 
+  -- In-editor Markdown rendering
+  { import = "astrocommunity.markdown-and-latex.render-markdown-nvim" },
+
   -- JSON tooling
   { import = "astrocommunity.pack.json" },
 

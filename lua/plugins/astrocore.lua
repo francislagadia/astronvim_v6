@@ -26,10 +26,19 @@ local function toggle_lazygit()
   local astro = require "astrocore"
   local root = lazygit_root_for_current_buffer()
 
-  if not root then vim.notify("No lazygit repo rule matched; using current cwd", vim.log.levels.INFO) end
+  if root then
+    astro.toggle_term_cmd { cmd = "lazygit -p " .. vim.fn.shellescape(root), direction = "float" }
+    return
+  end
 
-  local cmd = root and ("lazygit -p " .. vim.fn.shellescape(root)) or "lazygit"
-  astro.toggle_term_cmd { cmd = cmd, direction = "float" }
+  local worktree = astro.file_worktree()
+  local flags = worktree
+      and (" --work-tree=%s --git-dir=%s"):format(
+        vim.fn.shellescape(worktree.toplevel),
+        vim.fn.shellescape(worktree.gitdir)
+      )
+    or ""
+  astro.toggle_term_cmd { cmd = "lazygit" .. flags, direction = "float" }
 end
 
 ---@type LazySpec
@@ -37,6 +46,12 @@ return {
   "AstroNvim/astrocore",
   ---@type AstroCoreOpts
   opts = {
+    git_worktrees = {
+      {
+        toplevel = vim.env.HOME,
+        gitdir = vim.env.HOME .. "/.cfg",
+      },
+    },
     -- Configure core features of AstroNvim
     features = {
       large_buf = { size = 1024 * 256, lines = 10000 }, -- set global limits for large files for disabling features like treesitter

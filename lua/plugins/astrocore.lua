@@ -108,6 +108,8 @@ return {
         ["<Leader>gg"] = { toggle_lazygit, desc = "ToggleTerm lazygit" },
         ["<Leader>tl"] = { toggle_lazygit, desc = "ToggleTerm lazygit" },
 
+        ["<Leader>Mr"] = { "<Cmd>RenderMarkdown buf_toggle<CR>", desc = "Toggle render" },
+
         -- vim-easy-align mappings
         ["ga"] = { ":EasyAlign ", desc = "EasyAlign" },
 

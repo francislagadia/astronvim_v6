@@ -39,15 +39,15 @@ return {
         end,
       },
       basedpyright = {
-        -- Point basedpyright at the project's pyenv virtualenv (via .python-version),
-        -- same convention already used for ruff above.
-        on_new_config = function(config, root_dir)
-          local python_path = resolve_pyenv_tool(root_dir, "python")
-          if python_path then
-            config.settings = vim.tbl_deep_extend("force", config.settings or {}, {
-              python = { pythonPath = python_path },
-            })
-          end
+        -- Point basedpyright at the project's pyenv virtualenv (via .python-version), falling
+        -- back to the astrocommunity pack's default (PATH-resolved python) otherwise. Must be
+        -- before_init, not on_new_config - the pack's own before_init runs later and would
+        -- otherwise overwrite pythonPath unconditionally.
+        before_init = function(_, config)
+          local python_path = resolve_pyenv_tool(config.root_dir, "python") or vim.fn.exepath "python"
+          if not config.settings then config.settings = {} end
+          if not config.settings.python then config.settings.python = {} end
+          config.settings.python.pythonPath = python_path
         end,
       },
     },

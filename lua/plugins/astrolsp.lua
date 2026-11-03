@@ -38,6 +38,18 @@ return {
           return vim.lsp.rpc.start({ cmd, "server" }, dispatchers)
         end,
       },
+      basedpyright = {
+        -- Point basedpyright at the project's pyenv virtualenv (via .python-version),
+        -- same convention already used for ruff above.
+        on_new_config = function(config, root_dir)
+          local python_path = resolve_pyenv_tool(root_dir, "python")
+          if python_path then
+            config.settings = vim.tbl_deep_extend("force", config.settings or {}, {
+              python = { pythonPath = python_path },
+            })
+          end
+        end,
+      },
     },
   },
 }

@@ -10,6 +10,12 @@ return {
     opts = {
       provider = "cursor",
       mode = "agentic",
+      mappings = {
+        -- avante's own defaults put these under lowercase <leader>a instead
+        -- of this config's <Leader>A prefix; alias them for consistency.
+        select_acp_model = "<Leader>AM",
+        select_acp_mode = "<Leader>Am",
+      },
       acp_providers = {
         cursor = {
           command = vim.fn.expand "~/.local/bin/agent",

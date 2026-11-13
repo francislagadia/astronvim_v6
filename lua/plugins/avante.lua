@@ -30,6 +30,15 @@ end
 return {
   {
     "yetone/avante.nvim",
+    -- AstroCommunity's avante-nvim spec hasn't caught up with avante.nvim's
+    -- newer mandatory deps (see avante/init.lua's `avante-requirements` doc
+    -- comment), so declare them here. `dependencies` merges across spec
+    -- fragments via vim.list_extend, so this adds to (not replaces) the
+    -- community spec's dependency list.
+    dependencies = {
+      "ColinKennedy/mega.cmdparse",
+      "ColinKennedy/mega.logging",
+    },
     -- defining these as lazy.nvim `keys` makes avante's own safe_keymap_set skip
     -- binding them (it checks for an existing lazy keys handler for the same lhs),
     -- so our sidebar-opening wrapper is what actually runs.

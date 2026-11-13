@@ -135,6 +135,10 @@ return {
       v = {
         -- vim-easy-align mappings
         ["ga"] = { ":EasyAlign ", desc = "EasyAlign" },
+
+        -- which-key group label (mirrors the normal-mode label AstroCommunity's
+        -- avante-nvim spec sets, since Avante also has visual-mode mappings)
+        ["<Leader>A"] = { desc = "\u{e28c} Avante" },
       },
     },
   },

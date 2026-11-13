@@ -26,10 +26,28 @@ local function select_acp_mode()
   require("avante.api").select_acp_mode()
 end
 
+-- avante hardcodes the sidebar Todos split to 3 lines (no config option), so
+-- long todo lists are cut off. Override the height getter to grow with the list
+-- up to TODOS_MAX_HEIGHT. +1 accounts for the winbar header line.
+local TODOS_MAX_HEIGHT = 10
+
+local function patch_todos_height()
+  local Sidebar = require "avante.sidebar"
+  Sidebar.get_todos_container_height = function(self)
+    local history = self.chat_history
+    if history == nil or #history.todos == 0 then return 0 end
+    return math.max(3, math.min(#history.todos + 1, TODOS_MAX_HEIGHT))
+  end
+end
+
 ---@type LazySpec
 return {
   {
     "yetone/avante.nvim",
+    config = function(_, opts)
+      require("avante").setup(opts)
+      patch_todos_height()
+    end,
     -- AstroCommunity's avante-nvim spec hasn't caught up with avante.nvim's
     -- newer mandatory deps (see avante/init.lua's `avante-requirements` doc
     -- comment), so declare them here. `dependencies` merges across spec

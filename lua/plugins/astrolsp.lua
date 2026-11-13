@@ -30,7 +30,36 @@ return {
   "AstroNvim/astrolsp",
   ---@type AstroLSPOpts
   opts = {
+    mappings = {
+      n = {
+        gd = {
+          -- basedpyright resolves a fixture parameter to the argument itself, so ask
+          -- pytest_language_server first and fall back to the normal definition request.
+          function()
+            local client = vim.lsp.get_clients({ bufnr = 0, name = "pytest_language_server" })[1]
+            if not client then return vim.lsp.buf.definition() end
+
+            local params = vim.lsp.util.make_position_params(0, client.offset_encoding)
+            client:request("textDocument/definition", params, function(_, result)
+              local loc = result and (vim.islist(result) and result[1] or result)
+              if loc then
+                vim.lsp.util.show_document(loc, client.offset_encoding, { focus = true })
+              else
+                vim.lsp.buf.definition()
+              end
+            end, 0)
+          end,
+          desc = "Go to definition (pytest fixture first)",
+          cond = "textDocument/definition",
+        },
+      },
+    },
     config = {
+      pytest_language_server = {
+        -- pytest-language-server 0.26.0 permanently misses plugin fixtures for a file whose didOpen
+        -- lands right after `initialized` (startup race); on_init runs before nvim sends didOpen.
+        on_init = function() vim.wait(500) end,
+      },
       ruff = {
         -- Prefer the project's own Ruff binary over Mason/global installs.
         cmd = function(dispatchers, config)

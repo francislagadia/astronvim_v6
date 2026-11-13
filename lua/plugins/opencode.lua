@@ -1,3 +1,7 @@
+-- Disabled: migrating from OpenCode to Avante. Flip back to `true` to
+-- re-enable the embedded OpenCode terminal + <Leader>Ot keymap.
+local ENABLE_OPENCODE = false
+
 local opencode_cmd = "opencode --port"
 
 local terminal_opts = {
@@ -15,6 +19,7 @@ end
 return {
   {
     "NickvanDyke/opencode.nvim",
+    enabled = ENABLE_OPENCODE,
     init = function()
       -- AstroCommunity still maps <Leader>Ot to require("opencode").toggle(),
       -- but current opencode.nvim removed that API, so we provide terminal-based startup.
@@ -29,6 +34,7 @@ return {
   },
   {
     "AstroNvim/astrocore",
+    enabled = ENABLE_OPENCODE,
     opts = function(_, opts)
       local maps = assert(opts.mappings)
       maps.n["<Leader>Ot"] = {

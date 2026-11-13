@@ -124,8 +124,12 @@ return {
         ["<C-s>"] = false, -- disable force write
         ["<C-q>"] = false, -- disable force quit
 
-        -- Unset default AstroNvim leader mappings that will close or write buffers
-        ["<Leader>c"] = false,
+        -- Unset default AstroNvim leader mappings that will close or write buffers.
+        -- <Leader>c stays disabled as an action ([1] = false survives the deep
+        -- merge with AstroNvim's default close-buffer function) but is still
+        -- named, because lua/plugins/copilotchat.lua binds a real <Leader>cc
+        -- under it and which-key otherwise shows the raw key.
+        ["<Leader>c"] = { [1] = false, desc = "CopilotChat" },
         ["<Leader>C"] = false,
         ["<Leader>q"] = false,
         ["<Leader>w"] = false,

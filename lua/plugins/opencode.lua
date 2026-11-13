@@ -34,8 +34,11 @@ return {
   },
   {
     "AstroNvim/astrocore",
-    enabled = ENABLE_OPENCODE,
+    -- NOTE: `enabled` here would disable the *entire* astrocore plugin
+    -- (this is a merge fragment, not a standalone plugin spec), so gate
+    -- the keymap itself instead.
     opts = function(_, opts)
+      if not ENABLE_OPENCODE then return opts end
       local maps = assert(opts.mappings)
       maps.n["<Leader>Ot"] = {
         toggle_embedded_opencode,

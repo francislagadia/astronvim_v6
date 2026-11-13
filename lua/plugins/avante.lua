@@ -3,10 +3,40 @@
 -- authenticated `~/.local/bin/agent` binary.
 -- https://cursor.com/docs/cli/acp
 
+-- ACP's model/mode pickers need a live sidebar+session (avante.acp_config_selector
+-- warns "Please open the Avante sidebar first" and bails otherwise), so open the
+-- sidebar before invoking them. Mirrors the sidebar-open check already used by the
+-- community avante-nvim spec's neo-tree "avante_add_files" integration.
+local function ensure_sidebar_open()
+  local sidebar = require("avante").get()
+  if not sidebar or not sidebar:is_open() then
+    require("avante.api").ask()
+    sidebar = require("avante").get()
+  end
+  return sidebar
+end
+
+local function select_acp_model()
+  ensure_sidebar_open()
+  require("avante.api").select_acp_model()
+end
+
+local function select_acp_mode()
+  ensure_sidebar_open()
+  require("avante.api").select_acp_mode()
+end
+
 ---@type LazySpec
 return {
   {
     "yetone/avante.nvim",
+    -- defining these as lazy.nvim `keys` makes avante's own safe_keymap_set skip
+    -- binding them (it checks for an existing lazy keys handler for the same lhs),
+    -- so our sidebar-opening wrapper is what actually runs.
+    keys = {
+      { "<Leader>AM", select_acp_model, mode = "n", desc = "avante: select ACP model" },
+      { "<Leader>Am", select_acp_mode, mode = "n", desc = "avante: select ACP mode" },
+    },
     opts = {
       provider = "cursor",
       mode = "agentic",
